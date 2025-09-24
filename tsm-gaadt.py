@@ -115,8 +115,10 @@ class Population:
         # of each gene (AI BS: popping the best one each time until both children are full) and
         # try to build the children that way.
 
-        for gene1 in parent1.genes:
-            a = [g for g in parent2.genes if g[0] = gene1]
+        # for gene1 in parent1.genes:
+        #     a = [g for g in parent2.genes if g[0] = gene1]
+
+        return []
             
     
     def are_genes_valid(self, genes):
