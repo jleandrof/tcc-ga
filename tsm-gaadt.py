@@ -1,4 +1,4 @@
-# Genetic Algorithm for the Traveling Salesman Problem (TSP) using Holland's Method
+# GAADT implementation for TSP
 
 import random
 from sys import maxsize as MAX_INT
@@ -70,7 +70,7 @@ class Population:
     def __init__(self, size=DEFAULT_POPULATION_SIZE, gene_length=DEFAULT_GENE_LENGTH, fitness_function=sum):
         self.chromosomes = [Chromosome(random.sample(CITIES, gene_length), fitness_function) for _ in range(size)]
         # self.chromosomes.append(Chromosome([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], fitness_function))
-        self.chromosomes.append(Chromosome([10, 9, 8, 7, 6, 5, 4, 3, 2, 1], fitness_function))
+        # self.chromosomes.append(Chromosome([10, 9, 8, 7, 6, 5, 4, 3, 2, 1], fitness_function))
         self.best_chromosome = self.get_best_chromosome()
 
     def evolve(self):
@@ -83,8 +83,8 @@ class Population:
             parent1, parent2 = random.choices(parents, k=2)
             
             # child1, child2 = self.crossover(parent1, parent2) 
-            child1 = Chromosome(self.crossover_gaadt(parent1, parent2), tsl_fitness)
-            child2 = Chromosome(self.crossover_gaadt(parent2, parent1), tsl_fitness)
+            child1 = Chromosome(self.crossover_gaadt(parent1, parent2), tsm_fitness)
+            child2 = Chromosome(self.crossover_gaadt(parent2, parent1), tsm_fitness)
 
             if random.random() < MUTATION_RATE:
                 child1.mutate()
@@ -110,6 +110,11 @@ class Population:
         best = self.get_best_chromosome()
         if self.best_chromosome is None or best.fitness < self.best_chromosome.fitness:
             self.best_chromosome = best
+
+        # Population trimming based on average fitness
+        # if(len(self.chromosomes) > DEFAULT_POPULATION_SIZE):
+        #     average_fitness = sum([chromosome.fitness for chromosome in self.chromosomes]) / len(self.chromosomes)
+        #     self.chromosomes = [chromosome for chromosome in self.chromosomes if chromosome.fitness <= average_fitness]
 
 
     def crossover(self, parent1, parent2, crossover_point=None):
@@ -156,7 +161,7 @@ def example(genes):
     x = int(''.join([str(bit) for bit in genes]), 2)
     return -x**2/10 + 3*x
 
-def tsl_fitness(genes):
+def tsm_fitness(genes):
     total_distance = 0
     for i in range(len(genes) - 1):
         city1, city2 = genes[i], genes[i + 1]
@@ -165,7 +170,7 @@ def tsl_fitness(genes):
     return total_distance
     
 if(__name__ == "__main__"):
-    population = Population(fitness_function=tsl_fitness)
+    population = Population(fitness_function=tsm_fitness)
 
     print("Initial Population:")
     print(population)
@@ -180,4 +185,3 @@ if(__name__ == "__main__"):
     print(f"\nInitial Best Chromosome: {initial_best}")
     print(f"Final Best Chromosome: {population.best_chromosome}")
     child_sample = [(child[0].genes, child[1]) for child in children[:10]]
-    print([g for g in child_sample])
