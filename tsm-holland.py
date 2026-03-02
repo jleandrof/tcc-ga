@@ -34,7 +34,6 @@ class Chromosome:
 
         for i in range(len(self.genes) - 1):
             if random.random() < MUTATION_RATE:
-                # j = random.randint(i + 1, len(self.genes) - 1)
                 j, alternate = random.sample(range(len(self.genes)), 2)
                 if(i == j):
                     j = alternate
@@ -58,11 +57,6 @@ class Population:
     @property
     def best_chromosome(self):
         return self.get_best_chromosome()
-
-    # @best_chromosome.setter
-    # def best_chromosome(self, value):
-    #     self._best_chromosome = value
-
 
     def generate_random_chromosome(self, gene_length, fitness_function, initial_city=None):
         if initial_city is not None:
@@ -98,16 +92,6 @@ class Population:
 
         self.chromosomes.extend(next_generation)
         self.chromosomes = list(set(self.chromosomes)) # Remove duplicates
-
-
-    def crossover(self, parent1, parent2, crossover_point=None):
-        if crossover_point is None:
-            crossover_point = random.randint(1, len(parent1.genes) - 1)
-
-        child1_genes = parent1.genes[:crossover_point] + parent2.genes[crossover_point:]
-        child2_genes = parent2.genes[:crossover_point] + parent1.genes[crossover_point:]
-
-        return Chromosome(child1_genes, parent1.fitness_function), Chromosome(child2_genes, parent2.fitness_function)
     
     def ordered_crossover(self, parent1, parent2):
         size = len(parent1.genes)
@@ -151,11 +135,9 @@ if(__name__ == "__main__"):
     initial = population
 
     initial_best = population.best_chromosome
-    print(initial_best)
     for generation in range(DEFAULT_GENERATION_COUNT):
         population.evolve()
-        # print(f"Generation {generation + 1}: Best Chromosome: {population.best_chromosome}, Population Size: {len(population.chromosomes)}")
+        print(f"Generation {generation + 1}: Best Chromosome: {population.best_chromosome}, Population Size: {len(population.chromosomes)}")
     
-    print("initial population: \n", initial)
     print(f"\nInitial Best Chromosome: {initial_best}")
     print(f"Final Best Chromosome: {population.best_chromosome}")

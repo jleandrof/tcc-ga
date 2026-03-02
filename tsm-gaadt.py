@@ -11,7 +11,6 @@ DEFAULT_GENERATION_COUNT = 200
 
 MUTATION_RATE = 0.1
 
-# CITIES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 CITIES = [1, 2, 3, 4, 5]
 DISTANCE_MATRIX = {
     (1, 2): 10, (1, 3): 15, (1, 4): 20, (1, 5): 1,
@@ -98,14 +97,8 @@ class Population:
 
             # print(next_generation)
 
-        # next_generation.append(Chromosome([1, 3, 4, 2, 10, 7, 8, 9, 5, 6], tsl_fitness))
         self.chromosomes.extend(next_generation)
         self.chromosomes = list(set(self.chromosomes)) # Remove duplicates
-
-        # print([x.genes for x in self.chromosomes])
-        # best = self.get_best_chromosome()
-        # if self.best_chromosome is None or best.fitness < self.best_chromosome.fitness:
-        #     self.best_chromosome = best
 
         # Population trimming based on average fitness
         # if(len(self.chromosomes) > DEFAULT_POPULATION_SIZE):
@@ -157,8 +150,6 @@ def tsm_fitness(genes):
 if(__name__ == "__main__"):
     population = Population(fitness_function=tsm_fitness)
 
-    print("Initial Population:")
-    print(population)
     print(f"Best Chromosome: {population.best_chromosome}")
     print()
 
@@ -169,4 +160,5 @@ if(__name__ == "__main__"):
     
     print(f"\nInitial Best Chromosome: {initial_best}")
     print(f"Final Best Chromosome: {population.best_chromosome}")
+
     child_sample = [(child[0].genes, child[1]) for child in children[:10]]
